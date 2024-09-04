@@ -1,4 +1,4 @@
-import { Author } from '../graphql/models/auth'
+import { Author } from '../graphql/models/author'
 import { ICreateAuthor } from './create-author'
 
 export type SearchParamns = {

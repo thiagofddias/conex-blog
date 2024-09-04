@@ -1,6 +1,6 @@
 import { BadRequestError } from '@/shared/errors/bad-request-error'
 import { AuthorOutput } from '../dto/author-output'
-import { Author } from '../graphql/models/auth'
+import { Author } from '../graphql/models/author'
 import { AuthorsPrismaRepository } from '../repositories/authors-prisma.repository'
 import { ConflictError } from '@/shared/errors/conflict-error'
 

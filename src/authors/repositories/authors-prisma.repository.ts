@@ -1,5 +1,5 @@
 import { PrismaService } from '@/database/prisma/prisma.service'
-import { Author } from '../graphql/models/auth'
+import { Author } from '../graphql/models/author'
 import {
   IAuthorsRepository,
   SearchParamns,
