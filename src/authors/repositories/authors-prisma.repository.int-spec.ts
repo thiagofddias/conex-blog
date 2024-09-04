@@ -55,6 +55,69 @@ describe('AuthorsPrismaRepository Integration Tests', () => {
     expect(author).toMatchObject(data)
   })
 
+  test('should throws an error when updating a author not found', async () => {
+    const data = AuthorDataBuilder({})
+    const author = {
+      id: '796c5a25-1d3b-4228-9a75-06f416c6e218',
+      ...data,
+    }
+    await expect(repository.update(author)).rejects.toThrow(
+      new NotFoundError(
+        'Author not found using ID 796c5a25-1d3b-4228-9a75-06f416c6e218',
+      ),
+    )
+  })
+
+  test('should update a author', async () => {
+    const data = AuthorDataBuilder({})
+    const author = await prisma.author.create({ data })
+
+    const result = await repository.update({
+      ...author,
+      name: 'Updated Name',
+    })
+
+    expect(result.name).toBe('Updated Name')
+  })
+
+  test('should throws an error when deleting a author not found', async () => {
+    const data = AuthorDataBuilder({})
+    const author = {
+      id: '796c5a25-1d3b-4228-9a75-06f416c6e218',
+      ...data,
+    }
+    await expect(
+      repository.delete('796c5a25-1d3b-4228-9a75-06f416c6e218'),
+    ).rejects.toThrow(
+      new NotFoundError(
+        'Author not found using ID 796c5a25-1d3b-4228-9a75-06f416c6e218',
+      ),
+    )
+  })
+
+  test('should delete a author', async () => {
+    const data = AuthorDataBuilder({})
+    const author = await prisma.author.create({ data })
+
+    const result = await repository.delete(author.id)
+
+    expect(result).toMatchObject(author)
+  })
+
+  test('should return null when it does not found an author with the email provided', async () => {
+    const result = await repository.findByEmail('a@a.com')
+    expect(result).toBeNull()
+  })
+
+  test('should return a author in email search', async () => {
+    const data = AuthorDataBuilder({ email: 'a@a.com' })
+    const author = await prisma.author.create({ data })
+
+    const result = await repository.findByEmail('a@a.com')
+
+    expect(result).toMatchObject(author)
+  })
+
   describe('search method tests', () => {
     test('should only pagination when the parameters are null', async () => {
       const createdAt = new Date()
